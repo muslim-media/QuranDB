@@ -8,14 +8,11 @@ import fr.sofnul.qoran.iservice.IBuQoran;
 import fr.sofnul.qoran.iservice.IDaoQoran;
 
 public class BuQoran implements IBuQoran {
-	/**
-	 * Attributs
-	 */
 	private IDaoQoran daoQoran = new DaoQoran();
 	
 	@Override
-	public Sourate getSourate(Sourate paramSourat) {
-		return daoQoran.getSourate(paramSourat);
+	public Sourate getSourate(Sourate sourat) {
+		return daoQoran.getSourate(sourat);
 	}
 
 	@Override
@@ -24,17 +21,17 @@ public class BuQoran implements IBuQoran {
 	}
 
 	@Override
-	public Aya getAya(Aya paramAya) {
-		return daoQoran.getAya(paramAya);
+	public Aya getAya(Aya aya) {
+		return daoQoran.getAya(aya);
 	}
 
 	@Override
-	public List<Aya> getAyasDeSourate(Sourate paramSourate) {
-		return daoQoran.getAyasDeSourate(paramSourate);
+	public List<Aya> getAyasDeSourate(Sourate sourate) {
+		return daoQoran.getAyasDeSourate(sourate);
 	}
 
 	@Override
-	public List<Aya> getAyasListe(Integer paramStartAya, Integer paramEndAya) {
-		return daoQoran.getAyasListe(paramStartAya, paramEndAya);
+	public List<Aya> getAyas(Integer startAya, Integer endAya) {
+		return daoQoran.getAyasListe(startAya, endAya);
 	}
 }

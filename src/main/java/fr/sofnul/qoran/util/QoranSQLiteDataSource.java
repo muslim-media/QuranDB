@@ -13,24 +13,24 @@ import javax.sql.DataSource;
 public class QoranSQLiteDataSource implements DataSource {
 	private final static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(QoranSQLiteDataSource.class);
 	static {
-		log.info("Chargement de la class...");
+		log.debug("Chargement de la class...");
 		try {
-			log.info("Chargement de la class org.sqlite.JDBC");
+			log.debug("Chargement de la class org.sqlite.JDBC");
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e) {
 			log.warn("Erreur lors du chargement de la classe org.sqlite.JDBC");
 			e.printStackTrace();
 		}
-		log.info("Chargement de la class OK");
+		log.debug("Chargement de la class OK");
 	}
 	
 	@Override
 	public Connection getConnection() throws SQLException {
-		log.info("Début de la connexion...");
-		log.info("fichier : " + getClass().getClassLoader().getResource("qoran.db"));
+		log.debug("Début de la connexion...");
+		log.debug("fichier : " + getClass().getClassLoader().getResource("qoran.db"));
 		Connection cnx = DriverManager.getConnection("jdbc:sqlite:" + getClass().getClassLoader().getResource("qoran.db"));
-		log.info("Chargemen de la base " + getClass().getClassLoader().getResource("qoran.db"));
-		log.info("connexion OK");
+		log.debug("Chargemen de la base " + getClass().getClassLoader().getResource("qoran.db"));
+		log.debug("connexion OK");
 		return cnx;
 	}
 

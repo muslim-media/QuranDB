@@ -30,7 +30,7 @@ public class DaoQoran implements IDaoQoran {
 			log.info("Préparation des arguments...");
 			pstmt.setInt(1, paramSourat.getIdsourate().intValue());
 			ResultSet resultSet = pstmt.executeQuery();
-			log.info("Recupeation des sourates dans le retour de la requete...");
+			log.info("Recuperation des sourates dans le retour de la requete...");
 			while (resultSet.next()) {
 				sourate = new Sourate();
 				sourate.setIdsourate(Integer.parseInt(resultSet.getString("id")));

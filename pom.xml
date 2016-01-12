@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.sofnul.qoran</groupId>
 	<artifactId>QoranDB</artifactId>
-	<version>0.1.0</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>Quran Data base</name>
 	<description>DAO du quran avec une base de données SQLite</description>
 	<dependencies>

@@ -1,5 +1,12 @@
 package fr.sofnul.qoran.service;
 
+import fr.sofnul.qoran.entity.Aya;
+import fr.sofnul.qoran.entity.Sourate;
+import fr.sofnul.qoran.iservice.IDaoQoran;
+import fr.sofnul.qoran.util.QoranSQLiteDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,15 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
-import fr.sofnul.qoran.entity.Aya;
-import fr.sofnul.qoran.entity.Sourate;
-import fr.sofnul.qoran.iservice.IDaoQoran;
-import fr.sofnul.qoran.util.QoranSQLiteDataSource;
-
 public class DaoQoran implements IDaoQoran {
-	private final static Logger log = Logger.getLogger(DaoQoran.class);
+	private final static Logger log = LoggerFactory.getLogger(DaoQoran.class);
 	private QoranSQLiteDataSource qoranDB = new QoranSQLiteDataSource();
 	
 	@Override

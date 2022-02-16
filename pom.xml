@@ -6,16 +6,31 @@
 	<version>0.1-SNAPSHOT</version>
 	<name>Quran Data base</name>
 	<description>DAO du quran avec une base de données SQLite</description>
+	<properties>
+		<slf4j.version>1.7.36</slf4j.version>
+		<logback.version>1.2.10</logback.version>
+		<sqlite.version>3.36.0.3</sqlite.version>
+	</properties>
 	<dependencies>
 		<dependency>
-			<artifactId>log4j</artifactId>
-			<groupId>log4j</groupId>
-			<version>1.2.16</version>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+			<version>${logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.8.7</version>
+			<version>${sqlite.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -1,36 +1,38 @@
 package fr.sofnul.qoran.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.logging.Logger;
-
-import javax.sql.DataSource;
-
 
 public class QoranSQLiteDataSource implements DataSource {
-	private final static org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(QoranSQLiteDataSource.class);
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(QoranSQLiteDataSource.class);
+
 	static {
-		log.debug("Chargement de la class...");
+		LOGGER.debug("Chargement de la class...");
 		try {
-			log.debug("Chargement de la class org.sqlite.JDBC");
+			LOGGER.debug("Chargement de la class org.sqlite.JDBC");
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e) {
-			log.warn("Erreur lors du chargement de la classe org.sqlite.JDBC");
+			LOGGER.warn("Erreur lors du chargement de la classe org.sqlite.JDBC");
 			e.printStackTrace();
 		}
-		log.debug("Chargement de la class OK");
+		LOGGER.debug("Chargement de la class OK");
 	}
 	
 	@Override
 	public Connection getConnection() throws SQLException {
-		log.debug("Début de la connexion...");
-		log.debug("fichier : " + getClass().getClassLoader().getResource("qoran.db"));
+		LOGGER.debug("Début de la connexion...");
+		LOGGER.debug("fichier : " + getClass().getClassLoader().getResource("qoran.db"));
 		Connection cnx = DriverManager.getConnection("jdbc:sqlite:" + getClass().getClassLoader().getResource("qoran.db"));
-		log.debug("Chargemen de la base " + getClass().getClassLoader().getResource("qoran.db"));
-		log.debug("connexion OK");
+		LOGGER.debug("Chargemen de la base " + getClass().getClassLoader().getResource("qoran.db"));
+		LOGGER.debug("connexion OK");
 		return cnx;
 	}
 
@@ -53,7 +55,7 @@ public class QoranSQLiteDataSource implements DataSource {
 	}
 
 	@Override
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+	public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		return null;
 	}
 

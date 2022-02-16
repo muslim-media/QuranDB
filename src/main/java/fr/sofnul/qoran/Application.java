@@ -4,13 +4,14 @@ import fr.sofnul.qoran.entity.Aya;
 import fr.sofnul.qoran.entity.Sourate;
 import fr.sofnul.qoran.iservice.IBuQoran;
 import fr.sofnul.qoran.service.BuQoran;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public final class Application {
 
-    private static final Logger LOG = Logger.getLogger(Application.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         IBuQoran quran = new BuQoran();

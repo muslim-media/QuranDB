@@ -4,18 +4,19 @@ import fr.sofnul.qoran.entity.Aya;
 import fr.sofnul.qoran.entity.Sourate;
 import fr.sofnul.qoran.iservice.IBuQoran;
 import fr.sofnul.qoran.service.BuQoran;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public final class Application {
 
-    private static final Logger LOG = Logger.getLogger(Application.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
         IBuQoran quran = new BuQoran();
 
-        // Recuperation des la liste de sosurates
+        // Recuperation de la liste de sourates
         List<Sourate> sourates = quran.getSouratesListe();
         LOG.info("Taille de la liste: " + sourates.size());
         for (Sourate sourate : sourates) {
@@ -34,9 +35,9 @@ public final class Application {
 
         // Récuperation des ayates de la sourate 10
         logAyas(quran.getAyasDeSourate(sourate10));
-        // ATTENTION aà l'OutOfMemory
+        // ATTENTION à l'OutOfMemory
         logAyas(quran.getAyas(3000, 3010));
-        // Récupera ayate al korsi
+        // Récupère ayate al korsi
         Aya aya = new Aya();
         aya.setIdAya(262);
         logAya(quran.getAya(aya));
@@ -45,6 +46,7 @@ public final class Application {
     private static void logAya(Aya aya) {
         LOG.info(aya.getIdAya() + ": " + aya.getAyaTxt());
     }
+
     private static void logAyas(List<Aya> ayas) {
         for (Aya aya : ayas) {
             logAya(aya);

@@ -1,5 +1,12 @@
 package fr.sofnul.qoran.service;
 
+import fr.sofnul.qoran.entity.Aya;
+import fr.sofnul.qoran.entity.Sourate;
+import fr.sofnul.qoran.iservice.IDaoQoran;
+import fr.sofnul.qoran.util.QoranSQLiteDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,46 +14,40 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
-import fr.sofnul.qoran.entity.Aya;
-import fr.sofnul.qoran.entity.Sourate;
-import fr.sofnul.qoran.iservice.IDaoQoran;
-import fr.sofnul.qoran.util.QoranSQLiteDataSource;
-
 public class DaoQoran implements IDaoQoran {
-	private final static Logger log = Logger.getLogger(DaoQoran.class);
-	private QoranSQLiteDataSource qoranDB = new QoranSQLiteDataSource();
+	private final static Logger LOGGER = LoggerFactory.getLogger(DaoQoran.class);
+	private final QoranSQLiteDataSource qoranDB = new QoranSQLiteDataSource();
 	
 	@Override
 	public Sourate getSourate(Sourate paramSourat) {
-		log.info("Début de la récuperation de la sourate");
-		Sourate sourate = null;
-		Connection connection = null; 
+		LOGGER.info("Début de la récupération de la sourate");
+		Sourate sourate = new Sourate();
+		Connection connection = null;
 		try {
-			log.info("Début de la connexion...");
+			LOGGER.info("Début de la connexion...");
 			connection = qoranDB.getConnection();
 			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM sourate WHERE id = ?");
-			log.info("Préparation des arguments...");
-			pstmt.setInt(1, paramSourat.getIdsourate().intValue());
+			LOGGER.info("Préparation des arguments...");
+			pstmt.setInt(1, paramSourat.getIdsourate());
 			ResultSet resultSet = pstmt.executeQuery();
-			log.info("Recuperation des sourates dans le retour de la requete...");
+			LOGGER.info("Recuperation des sourates dans le retour de la requete...");
 			while (resultSet.next()) {
-				sourate = new Sourate();
 				sourate.setIdsourate(Integer.parseInt(resultSet.getString("id")));
 				sourate.setTitreSourateFR(resultSet.getString("titre_fr"));
 				sourate.setTitreSourateAR(resultSet.getString("titre_ar"));
 				sourate.setNbAya(Integer.parseInt(resultSet.getString("nb_aya")));
 				sourate.setStartAya(Integer.parseInt(resultSet.getString("start_aya")));
 			}
-			log.info("sourate trouvée: " + sourate.getTitreSourateFR());
+			LOGGER.info("sourate trouvée: " + sourate.getTitreSourateFR());
 		} catch (SQLException e) {
-			log.warn("Erreur lors de la transaction dans la base !");
+			LOGGER.warn("Erreur lors de la transaction dans la base !");
 			sourate = null;
 			e.printStackTrace();
 		} finally {
 			try {
-				connection.close();
+				if (connection != null) {
+					connection.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -56,16 +57,15 @@ public class DaoQoran implements IDaoQoran {
 	
 	@Override
 	public List<Sourate> getSouratesListe() {
-		List<Sourate> sourateListe = new ArrayList<Sourate>();
-		Sourate sourate = null;
-		Connection connection = null; 
+		List<Sourate> sourateListe = new ArrayList<>();
+		Sourate sourate = new Sourate();
+		Connection connection = null;
 		try {
 			connection = qoranDB.getConnection();
 			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM sourate");
 			ResultSet resultSet = pstmt.executeQuery();
-			
+
 			while (resultSet.next()) {
-				sourate = new Sourate();
 				sourate.setIdsourate(Integer.parseInt(resultSet.getString("id")));
 				sourate.setTitreSourateFR(resultSet.getString("titre_fr"));
 				sourate.setTitreSourateAR(resultSet.getString("titre_ar"));
@@ -79,7 +79,9 @@ public class DaoQoran implements IDaoQoran {
 			e.printStackTrace();
 		} finally {
 			try {
-				connection.close();
+				if (connection != null) {
+					connection.close();
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -89,43 +91,44 @@ public class DaoQoran implements IDaoQoran {
 	
 	@Override
 	public Aya getAya(Aya paramAya) {
-		List<Aya> ayaListe = getAyasListe(paramAya.getIdAya(), paramAya.getIdAya());
-		return ayaListe.get(0);
+		List<Aya> ayas = getAyas(paramAya.getIdAya(), paramAya.getIdAya());
+		return ayas.get(0);
 	}
 	
 	@Override
 	public List<Aya> getAyasDeSourate(Sourate paramSourat) {
-		return getAyasListe(paramSourat.getStartAya(), paramSourat.getNbAya() + paramSourat.getStartAya() - 1);
+		return getAyas(paramSourat.getStartAya(), paramSourat.getNbAya() + paramSourat.getStartAya() - 1);
 	}
 	
 	@Override
-	public List<Aya> getAyasListe(Integer paramStartAya, Integer paramEndAya) {
-		List<Aya> ayaListe = new ArrayList<Aya>();
-		Aya aya = null;
-		Connection connection = null; 
+	public List<Aya> getAyas(Integer paramStartAya, Integer paramEndAya) {
+		List<Aya> ayas = new ArrayList<>();
+		Connection connection = null;
 		try {
 			connection = qoranDB.getConnection();
 			PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM aya WHERE id BETWEEN ? AND ?");
-			pstmt.setInt(1, paramStartAya.intValue());
-			pstmt.setInt(2, paramEndAya.intValue());
+			pstmt.setInt(1, paramStartAya);
+			pstmt.setInt(2, paramEndAya);
 			ResultSet resultSet = pstmt.executeQuery();
 			
 			while (resultSet.next()) {
-				aya = new Aya(); // nouvelle aya
-				aya.setIdAya(Integer.parseInt(resultSet.getString("id"))); // recuperation de l'ID de l'aya
-				aya.setAyaTxt(resultSet.getString("ayaTxt")); // recupération du contenu de l'aya
-				ayaListe.add(aya); // Ajout à la liste
+				Aya aya = new Aya();
+				aya.setIdAya(Integer.parseInt(resultSet.getString("id")));
+				aya.setAyaTxt(resultSet.getString("ayaTxt"));
+				ayas.add(aya);
 			}
 		} catch (SQLException e) {
-			ayaListe = null;
-			e.printStackTrace();
+			ayas = null;
+			LOGGER.error(e.getMessage(), e);
 		} finally {
 			try {
-				connection.close();
+				if (connection != null) {
+					connection.close();
+				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				LOGGER.error(e.getMessage(), e);
 			}
 		}
-		return ayaListe;
+		return ayas;
 	}
 }

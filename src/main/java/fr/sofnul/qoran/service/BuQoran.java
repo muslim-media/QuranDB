@@ -1,14 +1,14 @@
 package fr.sofnul.qoran.service;
 
-import java.util.List;
-
 import fr.sofnul.qoran.entity.Aya;
 import fr.sofnul.qoran.entity.Sourate;
 import fr.sofnul.qoran.iservice.IBuQoran;
 import fr.sofnul.qoran.iservice.IDaoQoran;
 
+import java.util.List;
+
 public class BuQoran implements IBuQoran {
-	private IDaoQoran daoQoran = new DaoQoran();
+	private final IDaoQoran daoQoran = new DaoQoran();
 	
 	@Override
 	public Sourate getSourate(Sourate sourat) {
@@ -32,6 +32,6 @@ public class BuQoran implements IBuQoran {
 
 	@Override
 	public List<Aya> getAyas(Integer startAya, Integer endAya) {
-		return daoQoran.getAyasListe(startAya, endAya);
+		return daoQoran.getAyas(startAya, endAya);
 	}
 }
